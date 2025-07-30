@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aerodynamics of Balsa Wood Gliders - Physics Project</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        
+        :root {
+            --earth-dark: #3a3a2e;
+            --earth-medium: #6b654b;
+            --earth-light: #d8d5c9;
+            --accent: #8b7355;
+            --accent-light: #c4b8a5;
+        }
+        
+        body {
+            font-family: 'Lora', serif;
+            background-color: #f9f8f5;
+            color: var(--earth-dark);
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+            color: var(--earth-dark);
+        }
+        
+        .navbar {
+            background-color: var(--earth-dark);
+            border-bottom: 1px solid var(--accent-light);
+        }
+        
+        .navbar-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .hero {
+            min-height: 60vh; 
+            background: linear-gradient(rgba(58, 58, 46, 0.7), rgba(58, 58, 46, 0.7)), 
+                        url('Photos/plane.png');
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            padding: 100px 0 60px;
+            color: var(--earth-light);
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .section-title {
+            position: relative;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            color: var(--earth-medium);
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--accent);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 0;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            transition: transform 0.3s ease;
+            border-bottom: 3px solid var(--accent-light);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            background-color: var(--earth-dark);
+            color: white;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+            border-radius: 0 !important;
+            padding: 15px 20px;
+        }
+        
+        .hypothesis-card {
+            border-left: 3px solid var(--accent);
+        }
+        
+        .variable-table th {
+            background-color: var(--earth-medium);
+            color: white;
+            font-weight: normal;
+        }
+        
+        .data-table th {
+            background-color: var(--earth-dark);
+            color: white;
+            font-weight: normal;
+        }
+        
+        .gallery-item {
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .gallery-item img {
+            transition: transform 0.5s ease;
+            width: 100%;
+            height: auto;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.03);
+        }
+        
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(58, 58, 46, 0.8);
+            color: white;
+            padding: 15px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+        
+        .footer {
+            background-color: var(--earth-dark);
+            color: var(--earth-light);
+            padding: 40px 0 20px;
+            border-top: 1px solid var(--accent-light);
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--accent);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed var(--accent-light);
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: -36px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--earth-medium);
+            border: 2px solid var(--accent);
+        }
+        
+        .force-card {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            border-bottom: 3px solid var(--accent-light);
+            height: 100%;
+        }
+        
+        .force-icon {
+            font-size: 2rem;
+            color: var(--earth-medium);
+            margin-bottom: 15px;
+        }
+        
+        .conclusion-box {
+            background-color: white;
+            padding: 30px;
+            border-bottom: 3px solid var(--accent);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .btn-earth {
+            background-color: var(--earth-medium);
+            color: white;
+            border-radius: 0;
+            border: none;
+            padding: 8px 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-earth:hover {
+            background-color: var(--earth-dark);
+            color: white;
+        }
+        
+        .btn-earth-outline {
+            background-color: transparent;
+            color: var(--earth-medium);
+            border-radius: 0;
+            border: 1px solid var(--earth-medium);
+            padding: 8px 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-earth-outline:hover {
+            background-color: var(--earth-medium);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: 80px 0 40px;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-feather-alt me-2"></i>
+                Balsa Glider Study
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#overview">Overview</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#hypothesis">Hypothesis</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#theory">Theory</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#experiment">Experiment</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#results">Results</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="display-4 mb-3">Aerodynamics of Balsa Wood Gliders</h1>
+            <p class="lead mb-4">Exploring the relationship between design and flight performance</p>
+            <p class="mb-5">Physics Investigatory Project 2025-26</p>
+            <div>
+                <span class="d-inline-block me-3 mb-2">Yashsvi Chavda</span>
+                <span class="d-inline-block">Class 12-A</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Overview -->
+    <section id="overview" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5">
+                    <h2 class="section-title">Project Overview</h2>
+                    <p>This experimental study investigates how design parameters like wing shape, dihedral angle, and center of gravity affect the flight characteristics of balsa wood gliders.</p>
+                </div>
+            </div>
+            
+            <div class="row mb-5">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <i class="fas fa-book me-2"></i>Preface
+                        </div>
+                        <div class="card-body">
+                            <p>This project examines the four forces of flight—lift, drag, weight, and thrust—through the construction and testing of balsa wood gliders with varying design parameters.</p>
+                            <p>The primary objective is to determine how specific design elements influence flight performance metrics including distance traveled and time aloft.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <i class="fas fa-hands-helping me-2"></i>Acknowledgments
+                        </div>
+                        <div class="card-body">
+                            <p>Special thanks to:</p>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-chalkboard-teacher me-2 text-muted"></i>Priti Ma'am (Physics Teacher)</li>
+                                <li><i class="fas fa-flask me-2 text-muted"></i>Nilesh Sir & Sanjay Sir (Lab Teachers)</li>
+                                <li><i class="fas fa-home me-2 text-muted"></i>My parents for their support</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hypothesis and Research Questions -->
+    <section id="hypothesis" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Hypothesis & Research</h2>
+            
+            <div class="row mb-5">
+                <div class="col-lg-6">
+                    <div class="card hypothesis-card h-100">
+                        <div class="card-header">
+                            <i class="fas fa-lightbulb me-2"></i>Hypotheses
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <h5>Wing Shape</h5>
+                                <p>Tapered wing designs will demonstrate longer flight distance and duration compared to rectangular wings.</p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h5>Dihedral Angle</h5>
+                                <p>Increased dihedral angle will improve lateral stability and flight performance.</p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h5>Center of Gravity</h5>
+                                <p>Optimal CG position near the wing's leading edge will enhance stability.</p>
+                            </div>
+                            
+                            <div>
+                                <h5>Aspect Ratio</h5>
+                                <p>Higher aspect ratio wings will exhibit improved aerodynamic efficiency.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <i class="fas fa-question me-2"></i>Research Questions
+                        </div>
+                        <div class="card-body">
+                            <ol class="list-styled">
+                                <li class="mb-3">How does wing shape influence flight performance metrics?</li>
+                                <li class="mb-3">What dihedral angle provides optimal stability?</li>
+                                <li class="mb-3">How does CG position affect flight characteristics?</li>
+                                <li class="mb-3">What is the relationship between aspect ratio and efficiency?</li>
+                                <li>How do combined design parameters influence overall performance?</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Theory and Principles -->
+    <section id="theory" class="py-5">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Theory & Principles</h2>
+            
+            <div class="row mb-5">
+                <div class="col-lg-6">
+                    <h3 class="mb-4">Four Forces of Flight</h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="force-card">
+                                <div class="force-icon">
+                                    <i class="fas fa-arrow-up"></i>
+                                </div>
+                                <h5>Lift</h5>
+                                <p>Upward force opposing weight, generated by wing airfoil</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="force-card">
+                                <div class="force-icon">
+                                    <i class="fas fa-weight-hanging"></i>
+                                </div>
+                                <h5>Weight</h5>
+                                <p>Downward gravitational force on the aircraft</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="force-card">
+                                <div class="force-icon">
+                                    <i class="fas fa-forward"></i>
+                                </div>
+                                <h5>Thrust</h5>
+                                <p>Forward propulsive force (absent in gliders)</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="force-card">
+                                <div class="force-icon">
+                                    <i class="fas fa-wind"></i>
+                                </div>
+                                <h5>Drag</h5>
+                                <p>Resistance opposing forward motion</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="mt-5 mb-4">Key Principles</h3>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5><i class="fas fa-water me-2"></i>Bernoulli's Principle</h5>
+                            <p>Pressure decreases as fluid velocity increases, creating lift through differential pressure above and below the wing.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <h3 class="mb-4">Historical Context</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <h5>Early Concepts</h5>
+                            <p>Leonardo da Vinci's studies of bird flight and early flying machine designs (15th-16th century)</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h5>18th Century</h5>
+                            <p>Newton's air resistance theory (1726) and Bernoulli's fluid dynamics principle (1738)</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h5>19th Century</h5>
+                            <p>George Cayley's identification of the four forces of flight and first wind tunnel by Francis Wenham (1871)</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h5>Modern Era</h5>
+                            <p>Wright Brothers' first powered flight (1903) leading to modern aerodynamics and CFD</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-5">
+                        <h4>Glide Angle & Efficiency</h4>
+                        <div class="card">
+                            <div class="card-body">
+                                <p>The glide angle determines flying efficiency, with smaller angles enabling longer flights per altitude loss.</p>
+                                <div class="bg-light p-3 rounded mb-3">
+                                    <p class="mb-1">sin(a) = h/s</p>
+                                    <p class="mb-1">tan(a) = h/d</p>
+                                </div>
+                                <p>Where h = height, s = distance to top, d = horizontal distance flown.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experiment Section -->
+    <section id="experiment" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Experimental Design</h2>
+            
+            <div class="row mb-5">
+                <div class="col-lg-6">
+                    <h3 class="mb-4">Variables</h3>
+                    <div class="table-responsive">
+                        <table class="table variable-table">
+                            <thead>
+                                <tr>
+                                    <th>Variable</th>
+                                    <th>Implementation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Independent</strong><br>Dihedral Angle</td>
+                                    <td>5 gliders with angles: 0°, 5°, 10°, 15°, 18°</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Dependent</strong><br>Airtime/Distance</td>
+                                    <td>Stopwatch (±0.01s) and tape measure</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Controlled</strong><br>Dimensions</td>
+                                    <td>Constant wing span and area across tests</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h3 class="mt-5 mb-4">Materials</h3>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-tree me-2"></i>Balsa wood sheets and sticks</li>
+                        <li><i class="fas fa-cut me-2"></i>Craft knives and sandpaper</li>
+                        <li><i class="fas fa-balance-scale me-2"></i>Modeling clay for CG adjustment</li>
+                        <li><i class="fas fa-stopwatch me-2"></i>Precision measurement tools</li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-6">
+                    <h3 class="mb-4">Procedure</h3>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-ruler-combined me-2"></i>Construction
+                        </div>
+                        <div class="card-body">
+                            <ol>
+                                <li class="mb-2">Prepare templates and cut components</li>
+                                <li class="mb-2">Shape wings with airfoil profile</li>
+                                <li class="mb-2">Set dihedral angles (0° to 18°)</li>
+                                <li class="mb-2">Assemble tail and attach to fuselage</li>
+                                <li>Adjust CG using modeling clay</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-vial me-2"></i>Testing
+                        </div>
+                        <div class="card-body">
+                            <ol>
+                                <li class="mb-2">Build baseline and experimental gliders</li>
+                                <li class="mb-2">Perform initial trimming flights</li>
+                                <li class="mb-2">Conduct 5-10 trials per configuration</li>
+                                <li class="mb-2">Standardized hand launch procedure</li>
+                                <li>Record flight distance and time aloft</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results" class="py-5">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Results & Analysis</h2>
+            
+            <div class="row mb-5">
+                <div class="col-lg-6">
+                    <h3 class="mb-4">Key Findings</h3>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-chart-line me-2"></i>Performance
+                        </div>
+                        <div class="card-body">
+                            <p>Gliders with 10-15° dihedral showed optimal performance:</p>
+                            <ul>
+                                <li>0°: 1.20s airtime, 4.8m distance</li>
+                                <li>5°: 1.65s airtime, 6.2m distance</li>
+                                <li>10°: 2.05s airtime, 7.8m distance</li>
+                                <li>15°: 2.11s airtime, 8.4m distance</li>
+                                <li>18°: 1.68s airtime, 6.7m distance</li>
+                            </ul>
+                            <p>Performance peaked at 15° dihedral, then declined with further increase.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <h3 class="mb-4">Data Summary</h3>
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-table me-2"></i>Measurements
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Angle</th>
+                                            <th>Airtime</th>
+                                            <th>Distance</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>0°</td>
+                                            <td>1.20 ± 0.11s</td>
+                                            <td>4.8 ± 0.3m</td>
+                                        </tr>
+                                        <tr>
+                                            <td>5°</td>
+                                            <td>1.65 ± 0.15s</td>
+                                            <td>6.2 ± 0.4m</td>
+                                        </tr>
+                                        <tr>
+                                            <td>10°</td>
+                                            <td>2.05 ± 0.22s</td>
+                                            <td>7.8 ± 0.5m</td>
+                                        </tr>
+                                        <tr>
+                                            <td>15°</td>
+                                            <td>2.11 ± 0.38s</td>
+                                            <td>8.4 ± 0.6m</td>
+                                        </tr>
+                                        <tr>
+                                            <td>18°</td>
+                                            <td>1.68 ± 0.25s</td>
+                                            <td>6.7 ± 0.4m</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusion -->
+    <section class="py-5">
+        <div class="container">
+            <div class="conclusion-box">
+                <h2 class="text-center mb-4">Conclusions</h2>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Findings</h4>
+                        <ul>
+                            <li class="mb-2">10-15° dihedral provides optimal stability</li>
+                            <li class="mb-2">Excessive dihedral (>15°) reduces performance</li>
+                            <li class="mb-2">Stable configuration improves flight metrics</li>
+                            <li>Velocity remained constant across tests</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Insights</h4>
+                        <ul>
+                            <li class="mb-2">Practical demonstration of aerodynamic principles</li>
+                            <li class="mb-2">Importance of lateral stability in gliders</li>
+                            <li>Trade-offs between stability and efficiency</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <h4>Aerodynamics of Balsa Wood Gliders</h4>
+                    <p>Physics Investigatory Project 2025-26</p>
+                    <p>Yashsvi Chavda | Class 12-A</p>
+                </div>
+                <div class="col-md-6 mb-4 text-md-end">
+                    <h5>Guided By</h5>
+                    <p>Priti Ma'am (Physics Teacher)</p>
+                    <p>Nilesh Sir & Sanjay Sir (Lab Teachers)</p>
+                </div>
+            </div>
+            <div class="text-center pt-3 border-top border-accent">
+                <p>&copy; 2025 Physics Project. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Add active class to current section in navigation
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if(pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if(link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
